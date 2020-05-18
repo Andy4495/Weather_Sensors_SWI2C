@@ -52,7 +52,7 @@ void loop() {
   Serial.print("TMP007 Ext (0.1 C): ");
   Serial.println(myTMP007.getExtTempC());
   Serial.print("TMP007 Ext (0.1 F): ");
-  Serial.println(myTMP007.getTempF());
+  Serial.println(myTMP007.getExtTempF());
 
   myOPT3001.readSensor();
 
@@ -70,7 +70,7 @@ void loop() {
   Serial.print("BME280 P (inHG): ");
   Serial.print(myBME280.getPressureInHg());
   Serial.print("BME280 H (0.1%RH): ");
-  Serial.println(myBME180.getRH());
+  Serial.println(myBME280.getRH());
 
   delay(DELAY_TIME);
 }
