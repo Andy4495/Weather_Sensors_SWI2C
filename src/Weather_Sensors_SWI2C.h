@@ -11,9 +11,9 @@ Version History
 
 #include "SWI2C.h"
 
-#define TMP007_DEFAULT_ADDRESS               0x40
-#define OPT3001_DEFAULT_ADDRESS              0x47
-#define BME280_DEFAULT_ADDRESS               0x77
+#define TMP007_DEFAULT_ADDRESS               0x40     // 0x40 when ADDR0 and ADDR0 pulled to GND
+#define OPT3001_DEFAULT_ADDRESS              0x44     // 0x44 when ADDR pulled to GND
+#define BME280_DEFAULT_ADDRESS               0x76     // 0x76 when SDO pulled to GND
 
 #define TMP007_MASK_FOUR_SAMPLES             0x0400
 #define TMP007_MASK_FOUR_SAMPLES_LOW_POWER   0x0E00
@@ -34,7 +34,15 @@ Version History
 #define OPT3001_MANUFACTURE_ID_REGISTER 0x7e     // Should return 0x5449 (ASCI for "TI")
 #define OPT3001_DEVICE_ID_REGISTER      0x7f     // Should return 0x3001
 
-#define OPT3001_STARTUP_CONFIG          0xC410   // Same as device default config
+// Configuration:
+//   - Automatic Full Scale Mode
+//   - 100 ms Conversion Time
+//   - Continuous Conversion Mode
+//   - Latched Interrupt Reporting
+//   - INT Active low
+//   - Mask Exponent Disabled
+//   - Fault Count - One Fault
+#define OPT3001_STARTUP_CONFIG          0xC410
 
 // BME280 Registers
 #define BME280_DATA_F7_FE                    0xF7
@@ -106,23 +114,22 @@ class BME280_SWI2C {
 public:
   BME280_SWI2C(byte sda_pin, byte scl_pin, byte address = BME280_DEFAULT_ADDRESS);
   ~BME280_SWI2C();
-  void    begin();
-  void    readSensor();
-  int     getTempC();
-  int     getTempF();
-  int     getRH();
-  int     getPressurePa();
-  int     getPressureInHg();
-  uint8_t readDeviceID();
+  void      begin();
+  void      readSensor();
+  int       getTempC();
+  int       getTempF();
+  int       getRH();
+  uint16_t  getPressurehPa();
+  uint16_t  getPressureInHg();
+  uint8_t   readDeviceID();
 
 private:
-  SWI2C* _BME280_device;
-  void   calibrate();
-  int    _tempC;
-  int    _TempF;
-  int    _RH;
-  int    _pressurePa;
-  int    _pressureInHg;
+  SWI2C*    _BME280_device;
+  void      calibrate();
+  int       _tempC;
+  int       _TempF;
+  int       _RH;
+  uint16_t  _pressurehPa;
 
   // BME280 Calibration values
   uint16_t dig_T1;

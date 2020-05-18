@@ -31,7 +31,8 @@ void TMP007_SWI2C::readSensor() {
 
   // Temperature is returned in 1/32 degree Celsius
   // Next, multiply by 10 and divide by 32 (right shift 5) to get units in 1/10 degree Celsius (using integer math)
-  _intTempC = (_intTempC * 10) >> 5;
+  // Add in 16 to round up the hundredths to tenths (sixteen 1/32 degree corresponds to 1/2 for rounding)
+  _intTempC = (_intTempC * 10 + 16) >> 5;
 
   _TMP007_device->read2bFromRegisterMSBFirst(TMP007_EXTERNAL_TEMPERATURE, &data16);
   // Temperature is returned in 14 msb, so shift over to lsb
@@ -39,7 +40,8 @@ void TMP007_SWI2C::readSensor() {
 
   // Temperature is returned in units of 1/32 degree Celsius
   // Next, multiply by 10 and divide by 32 (right shift 5) to get units in 1/10 degree Celsius (using integer math)
-  _extTempC = (_extTempC * 10) >> 5;
+  // Add in 16 to round up the hundredths to tenths (sixteen 1/32 degree corresponds to 1/2 for rounding)
+  _extTempC = (_extTempC * 10 + 16) >> 5;
 }
 
 int TMP007_SWI2C::getIntTempC() {
@@ -47,7 +49,8 @@ int TMP007_SWI2C::getIntTempC() {
 }
 
 int TMP007_SWI2C::getIntTempF() {
-  return (_intTempC * 9) / 5 + 320;
+  // Scale up to hundredths and add 5 and scale back down to round the tenth degree correctly
+  return (_intTempC * 90 + 5) / 50 + 320;
 }
 
 int TMP007_SWI2C::getExtTempC() {
@@ -55,7 +58,8 @@ int TMP007_SWI2C::getExtTempC() {
 }
 
 int TMP007_SWI2C::getExtTempF() {
-  return (_extTempC * 9) / 5 + 320;
+  // Scale up to hundredths and add 5 and scale back down to round the tenth degree correctly
+  return (_extTempC * 90 + 5) / 50 + 320;
 }
 
 uint16_t TMP007_SWI2C::readDeviceID() {
@@ -86,7 +90,7 @@ void OPT3001_SWI2C::readSensor() {
   exponent = ((data16 >> 12) & 0x000f);   // Exponent is 4 msb
   exponent = 1 << exponent;               // Convert to "lsb size", in units of 1/100 lux
   mantissa = data16 & 0x0fff;             // Fractional part is 12 lsb
-  _lux = (mantissa * exponent) / 100;      // Only need precision down to single lux
+  _lux = (mantissa * exponent + 50) / 100;      // Only need precision down to single lux, add 50 to round up fractional lux
 }
 
 unsigned long OPT3001_SWI2C::getLux() {
@@ -129,12 +133,14 @@ int BME280_SWI2C::getRH() {
   return _RH;
 }
 
-int BME280_SWI2C::getPressurePa() {
-  return _pressurePa;
+uint16_t BME280_SWI2C::getPressurehPa() {
+  return _pressurehPa;
 }
 
-int BME280_SWI2C::getPressureInHg() {
-  return _pressurePa * 100 / 3386;
+uint16_t BME280_SWI2C::getPressureInHg() {
+  // Scale up by 10 in order to do interger math
+  // Since device is only accurate to +/- 1.5 hPa, and inHG conversion factor depends on temp, don't bother adding a rounding factor
+  return (_pressurehPa * 10) / 339;
 }
 
 uint8_t BME280_SWI2C::readDeviceID(){
@@ -228,6 +234,8 @@ void BME280_SWI2C::readSensor() {
   rawBME280T = ((uint32_t)BME280RawData[3] << 12) + ((uint32_t)BME280RawData[4] << 4) + ((uint32_t)BME280RawData[5] >> 4);
   rawBME280H = ((uint32_t)BME280RawData[6] <<  8) + (uint32_t)BME280RawData[7];
 
+  // The following T, H, and P compensation code is adapted from BoschSensortec's BME280 driver code on GitHub. (https://github.com/BoschSensortec/BME280_driver)
+
   var1_32  = ((((rawBME280T >> 3) - ((int32_t)dig_T1 << 1))) * ((int32_t)dig_T2)) >> 11;
   var2_32  = (((((rawBME280T >> 4) - ((int32_t)dig_T1)) * ((rawBME280T >> 4) - ((int32_t)dig_T1))) >> 12) * ((int32_t)dig_T3)) >> 14;
   t_fine   = var1_32 + var2_32;
@@ -244,7 +252,9 @@ void BME280_SWI2C::readSensor() {
   {
     v_x1_u32r = 419430400;
   }
-  _RH = ((v_x1_u32r >> 12) / 102); // in 0.1% (Note that a more accurate result would be to divide by 1024 and get units of 0.01%)
+  // Technically should divide by 1024 and return in units of 0.01% RH, but device is only accurate to +/- 3 %RH,
+  // so divide by 102 and return units of 0.1 %RH, which is still give more significant digits than accuracy of device.
+  _RH = ((v_x1_u32r >> 12) / 102); // units of 0.1 %RH
 
   var1_64 = ((int64_t)t_fine) - 128000;
   var2_64 = var1_64 * var1_64 * (int64_t)dig_P6;
@@ -260,10 +270,10 @@ void BME280_SWI2C::readSensor() {
     var2_64 = (((int64_t)dig_P8) * var3_64) >> 19;
 
     var3_64 = ((var3_64 + var1_64 + var2_64) >> 8) + (((int64_t)dig_P7) << 4);
-    _pressurePa =  (var3_64 / 256); // in Pa
+    _pressurehPa =  (var3_64 / 256); // in hPa
   }
   else {   // Avoid divide by 0 and return 0
-    _pressurePa =  0;
+    _pressurehPa =  0;
   }
 
 }

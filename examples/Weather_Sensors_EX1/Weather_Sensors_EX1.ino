@@ -66,7 +66,7 @@ void loop() {
   Serial.print("BME280 T (0.1 F): ");
   Serial.print(myBME280.getTempF());
   Serial.print("BME280 P (Pa): ");
-  Serial.println(myBME280.getPressurePa());
+  Serial.println(myBME280.getPressurehPa());
   Serial.print("BME280 P (inHG): ");
   Serial.print(myBME280.getPressureInHg());
   Serial.print("BME280 H (0.1%RH): ");
