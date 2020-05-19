@@ -1,6 +1,6 @@
 /*
 Library to interface with TMP007, OPT3001, and BME280 using Software I2C.
-   https://github.com/Andy4495/Weather_Sensors_SWI2C.h
+   https://github.com/Andy4495/Weather_Sensors_SWI2C
 
 Version History
    1.0.0    05/17/2020  A.T.   Original
