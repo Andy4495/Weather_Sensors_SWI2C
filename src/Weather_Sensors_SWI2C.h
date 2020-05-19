@@ -75,7 +75,7 @@ Version History
 // BME280 Configuration values
 #define BME280_VALUE_RESET_COMMAND           0xB6 // Forces power-on reset procedure
 #define BME280_VALUE_CONFIG                  0xA0 // 1000ms standby[7..5], IIR filter off [4..2], SPI disabled [0]
-#define BME280_VALUE_TP_CONFIG               0x27 // 1x sampling for T and P, normal mode (continuous)
+#define BME280_VALUE_TP_CONFIG               0x27 // 1x sampling for P, 4x sampling for T, forced mode
 #define BME280_VALUE_HUM_CONFIG              0x01 // 1x sampling for Humidity
 
 class TMP007_SWI2C {

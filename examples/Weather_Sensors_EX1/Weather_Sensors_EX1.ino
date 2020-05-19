@@ -9,14 +9,17 @@ Version History
 
 #include "Weather_Sensors_SWI2C.h"
 
-#define SDA_PIN      10
-#define SCL_PIN       9
+#define SDA_PIN           10
+#define SCL_PIN            9
+#define TMP007_ADDRESS  0x40    // Default is 0x40
+#define OPT3001_ADDRESS 0x47    // Default is 0x44
+#define BME280_ADDRESS  0x77    // Default is 0x76
 
 #define DELAY_TIME 5000
 
-TMP007_SWI2C  myTMP007(SDA_PIN, SCL_PIN);
-OPT3001_SWI2C myOPT3001(SDA_PIN, SCL_PIN);
-BME280_SWI2C  myBME280(SDA_PIN, SCL_PIN);
+TMP007_SWI2C  myTMP007(SDA_PIN, SCL_PIN, TMP007_ADDRESS);
+OPT3001_SWI2C myOPT3001(SDA_PIN, SCL_PIN, OPT3001_ADDRESS);
+BME280_SWI2C  myBME280(SDA_PIN, SCL_PIN, BME280_ADDRESS);
 
 void setup() {
 
@@ -29,12 +32,17 @@ void setup() {
   // Verify device IDs
   Serial.print("TMP007 DevID: 0x");
   Serial.println(myTMP007.readDeviceID(), HEX);
+  Serial.println("TMP007 Device ID should be: 0x0078");
+  Serial.println("");
 
   Serial.print("OPT3001 ManuID: 0x");
   Serial.println(myOPT3001.readDeviceID(), HEX);
+  Serial.println("OPT3001 Device ID should be: 0x3001");
+  Serial.println("");
 
   Serial.print("BME280 Chip ID: 0x");
   Serial.println(myBME280.readDeviceID(), HEX);
+  Serial.println("BME280 Device ID should be: 0x60");
 
   Serial.println("--");
 }
@@ -65,12 +73,13 @@ void loop() {
   Serial.println(myBME280.getTempC());
   Serial.print("BME280 T (0.1 F): ");
   Serial.print(myBME280.getTempF());
-  Serial.print("BME280 P (Pa): ");
+  Serial.print("BME280 P (hPa): ");
   Serial.println(myBME280.getPressurehPa());
   Serial.print("BME280 P (inHG): ");
   Serial.print(myBME280.getPressureInHg());
   Serial.print("BME280 H (0.1%RH): ");
   Serial.println(myBME280.getRH());
+  Serial.println("");
 
   delay(DELAY_TIME);
 }
