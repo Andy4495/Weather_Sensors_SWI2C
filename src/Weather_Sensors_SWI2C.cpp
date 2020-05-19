@@ -49,8 +49,13 @@ int TMP007_SWI2C::getIntTempC() {
 }
 
 int TMP007_SWI2C::getIntTempF() {
-  // Scale up to hundredths and add 5 and scale back down to round the tenth degree correctly
-  return (_intTempC * 90 + 5) / 50 + 320;
+  // Standard formula is F = 9/5 * C + 32
+  // Since temp is stored in 0.1 degrees, then formula is F = 9/5 * C + 320
+  // When using integer math, need to scale up by 10 and add five to round correctly,
+  // then scale down again to get back into correct units of 0.1 degrees.
+  // So the integer formula with rounding is now F = (90/5 * C + 5) / 10 + 320.
+  // Which simplifies to F = (18 * C + 5) / 10 + 320
+  return (_intTempC * 18 + 5) / 10 + 320;
 }
 
 int TMP007_SWI2C::getExtTempC() {
@@ -58,8 +63,8 @@ int TMP007_SWI2C::getExtTempC() {
 }
 
 int TMP007_SWI2C::getExtTempF() {
-  // Scale up to hundredths and add 5 and scale back down to round the tenth degree correctly
-  return (_extTempC * 90 + 5) / 50 + 320;
+  // See TMP007_SWI2C::getIntTempF() above for explanation on this conversion formula
+  return (_extTempC * 18 + 5) / 10 + 320;
 }
 
 uint16_t TMP007_SWI2C::readDeviceID() {
@@ -99,7 +104,7 @@ unsigned long OPT3001_SWI2C::getLux() {
 
 uint16_t OPT3001_SWI2C::readDeviceID(){
   uint16_t data16;
-  _OPT3001_device->read2bFromRegisterMSBFirst(OPT3001_MANUFACTURE_ID_REGISTER, &data16);
+  _OPT3001_device->read2bFromRegisterMSBFirst(OPT3001_DEVICE_ID_REGISTER, &data16);
   return data16;
 }
 
@@ -126,21 +131,23 @@ int BME280_SWI2C::getTempC() {
 }
 
 int BME280_SWI2C::getTempF() {
-  return (_tempC * 9) / 50 + 320;  // returns value with units of tenths degrees Fahrenheit
+  // See TMP007_SWI2C::getIntTempF() above for explanation of this conversion formula
+  // Note that for the BME280, temperature units are 0.01 degrees, so the Celsius value is alread scaled up
+  return ((_tempC * 9) / 5 + 5) / 10 + 320;  // returns value with units of tenths degrees Fahrenheit
 }
 
 int BME280_SWI2C::getRH() {
   return _RH;
 }
 
-uint16_t BME280_SWI2C::getPressurehPa() {
-  return _pressurehPa;
+uint32_t BME280_SWI2C::getPressurePa() {
+  return _pressurePa;
 }
 
 uint16_t BME280_SWI2C::getPressureInHg() {
-  // Scale up by 10 in order to do interger math
+  // Scale up by 100 in order to do interger math
   // Since device is only accurate to +/- 1.5 hPa, and inHG conversion factor depends on temp, don't bother adding a rounding factor
-  return (_pressurehPa * 10) / 339;
+  return (_pressurePa * 100) / 3386;
 }
 
 uint8_t BME280_SWI2C::readDeviceID(){
@@ -270,10 +277,10 @@ void BME280_SWI2C::readSensor() {
     var2_64 = (((int64_t)dig_P8) * var3_64) >> 19;
 
     var3_64 = ((var3_64 + var1_64 + var2_64) >> 8) + (((int64_t)dig_P7) << 4);
-    _pressurehPa =  (var3_64 / 256); // in hPa
+    _pressurePa =  (var3_64 / 256); // in units of Pa (or 0.01 hPa)
   }
   else {   // Avoid divide by 0 and return 0
-    _pressurehPa =  0;
+    _pressurePa =  0;
   }
 
 }

@@ -75,7 +75,7 @@ Version History
 // BME280 Configuration values
 #define BME280_VALUE_RESET_COMMAND           0xB6 // Forces power-on reset procedure
 #define BME280_VALUE_CONFIG                  0xA0 // 1000ms standby[7..5], IIR filter off [4..2], SPI disabled [0]
-#define BME280_VALUE_TP_CONFIG               0x27 // 1x sampling for P, 4x sampling for T, forced mode
+#define BME280_VALUE_TP_CONFIG               0x27 // 1x sampling for P, 1x sampling for T, normal mode
 #define BME280_VALUE_HUM_CONFIG              0x01 // 1x sampling for Humidity
 
 class TMP007_SWI2C {
@@ -119,7 +119,7 @@ public:
   int       getTempC();
   int       getTempF();
   int       getRH();
-  uint16_t  getPressurehPa();
+  uint32_t  getPressurePa();
   uint16_t  getPressureInHg();
   uint8_t   readDeviceID();
 
@@ -129,7 +129,7 @@ private:
   int       _tempC;
   int       _TempF;
   int       _RH;
-  uint16_t  _pressurehPa;
+  uint32_t  _pressurePa;
 
   // BME280 Calibration values
   uint16_t dig_T1;

@@ -29,57 +29,62 @@ void setup() {
   myOPT3001.begin();
   myBME280.begin();
 
+  Serial.println("");
+  Serial.println("Weather Sensors SWI2C Library Example 1");
+  Serial.println("=======================================");
+
   // Verify device IDs
-  Serial.print("TMP007 DevID: 0x");
+  Serial.print("TMP007 DeviceID: 0x");
   Serial.println(myTMP007.readDeviceID(), HEX);
-  Serial.println("TMP007 Device ID should be: 0x0078");
+  Serial.println("TMP007 Device ID should be: 0x78");
   Serial.println("");
 
-  Serial.print("OPT3001 ManuID: 0x");
+  Serial.print("OPT3001 DeviceID: 0x");
   Serial.println(myOPT3001.readDeviceID(), HEX);
   Serial.println("OPT3001 Device ID should be: 0x3001");
   Serial.println("");
 
-  Serial.print("BME280 Chip ID: 0x");
+  Serial.print("BME280 Device ID: 0x");
   Serial.println(myBME280.readDeviceID(), HEX);
   Serial.println("BME280 Device ID should be: 0x60");
 
   Serial.println("--");
 }
 
-
 void loop() {
 
   myTMP007.readSensor();
 
-  Serial.print("TMP007 Int (0.1 C): ");
+  Serial.println("TMP007 Sensor:");
+  Serial.print("  Internal Temperature (0.1 C): ");
   Serial.println(myTMP007.getIntTempC());
-  Serial.print("TMP007 Int (0.1 F): ");
+  Serial.print("  Internal Temperature (0.1 F): ");
   Serial.println(myTMP007.getIntTempF());
 
-  Serial.print("TMP007 Ext (0.1 C): ");
+  Serial.print("  External Temperature (0.1 C): ");
   Serial.println(myTMP007.getExtTempC());
-  Serial.print("TMP007 Ext (0.1 F): ");
+  Serial.print("  External Temperature (0.1 F): ");
   Serial.println(myTMP007.getExtTempF());
 
   myOPT3001.readSensor();
 
-  Serial.print("OTP3001 Lux: ");
+  Serial.println("Opt3001 Sensor: ");
+  Serial.print("  Light Intensity (lux):        ");
   Serial.println(myOPT3001.getLux());
 
-
   myBME280.readSensor();
-  Serial.print("BME280 T (0.01 C): ");
+  Serial.println("BME280 Sensor: ");
+  Serial.print("  Temperature (0.01 C):         ");
   Serial.println(myBME280.getTempC());
-  Serial.print("BME280 T (0.1 F): ");
-  Serial.print(myBME280.getTempF());
-  Serial.print("BME280 P (hPa): ");
-  Serial.println(myBME280.getPressurehPa());
-  Serial.print("BME280 P (inHG): ");
-  Serial.print(myBME280.getPressureInHg());
-  Serial.print("BME280 H (0.1%RH): ");
+  Serial.print("  Temperature (0.1 F):          ");
+  Serial.println(myBME280.getTempF());
+  Serial.print("  Pressure (Pa):               ");
+  Serial.println(myBME280.getPressurePa());
+  Serial.print("  Pressure (inHG):              ");
+  Serial.println(myBME280.getPressureInHg());
+  Serial.print("  Relative Humidity (0.1%RH):   ");
   Serial.println(myBME280.getRH());
-  Serial.println("");
+  Serial.println("---");
 
   delay(DELAY_TIME);
 }

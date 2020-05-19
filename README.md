@@ -7,18 +7,18 @@ It was specifically designed for the [SENSORS BoosterPack][4], but it can be use
 
 Usage
 -----
-*See the sketch included in the `examples` folder.*
+*See the exmple sketch included with the library.*
 
 1. Install the [SWI2C][5] library in addition to this library.
-2. Include the library in your sketch:
+2. Include this library in your sketch:
 ```
 #include "Weather_Sensors_SWI2C.h"
 ```
 3. Instantiate objects for the sensors that you are using:
 ```
-TMP007_SWI2C  myTMP007(sda_pin, scl_pin, I2C_Address_7bit);
-OPT3001_SWI2C myOPT3001(sda_pin, scl_pin, I2C_Address_7bit);
-BME280_SWI2C  myBME280(sda_pin, scl_pin, I2C_Address_7bit);
+TMP007_SWI2C  myTMP007(sda_pin, scl_pin, TMP007_7bit_I2C_address);
+OPT3001_SWI2C myOPT3001(sda_pin, scl_pin, OPT3001_7bit_I2C_address);
+BME280_SWI2C  myBME280(sda_pin, scl_pin, BME280_7bit_I2C_address);
 ```
 4. Initialize the sensor objects that you created:
 ```
@@ -54,14 +54,14 @@ myOPT3001.getLux();  // Returns unsigned long representing light intensity in lu
 myBME280.getTempC();  // Returns int representing temperature in units of 0.01 degrees Celsius
 myBME280.getTempF();  // Returns int representing temperature in units of 0.1 degrees Fahrenheit
 myBME280.getRH();  // Returns int representing relative humidity in units of 0.1 %RH
-myBME280.getPressurehPa();  // Returns uint16_t representing barometric pressure in units of hectopascals (hPa)
+myBME280.getPressurePa();  // Returns uint16_t representing barometric pressure in units of pascals (Pa)
 myBME280.getPressureInHg();  // Returns uint16_t representing barometric pressure in units of 0.01 inches of mercury (inHg)
 ```
 
 Implementation Details
 ----------------------
 
-This library was inspired by Rei Vilo's [Weather Sensors Library][7]. My library is implemented using software I2c and uses integer-only math. In addition, my library configures the sensors slightly differently.
+This library was inspired by Rei Vilo's [Weather Sensors Library][7]. My library is implemented using software I2c and uses integer-only math. In addition, my library configures the sensors somewhat differently.
 
 The BME280 object uses code based on portions of BoschSensortec's [BME280 driver code][6].
 
@@ -73,17 +73,19 @@ myBME280.readDeviceID();  // Should return the 8-bit value 0x60
 ```
 
 The constructors have default values for the I2C_Address. If your device is configured with its address select pins tied to ground, you can call the constructor without the I2C_Address and just include the sda_pin and scl_pin parameters. The default 7-bit I2C addresses are:
-- TMP007  - 0x40
-- OPT3001 - 0x44
-- BME280  - 0x76
+- TMP007: `0x40`
+- OPT3001: `0x44`
+- BME280: `0x76`
 
-The library provides unit conversions of Celsius to Fahrenheit and pascals to inches of mercury. Other unit conversions are left as an exercise to the user.
+The library provides unit conversions of Celsius to Fahrenheit and pascals to inches of mercury. Other unit conversions are left as an exercise for the user.
 
-The library only supports a single hardcoded configuration for each device. This configuration works well for a battery-powered weather sensor which takes infrequent sensor measurements (e.g., once a minute). For applications which require more frequent (i.e., on the order of once per second) or more accurate measurements, different configuration values may be needed and will require changes to the library. See the device datasheets for configuration options. The current device configurations are:
+The library only supports a single hardcoded configuration for each device. This configuration works well for a battery-powered weather sensor which takes infrequent sensor measurements (e.g., once a minute). Note that in some cases, the device's low-power mode is not configured. This is because the devices draw so little current (microamps), that the added complexity of supporting low power modes is not worth the power savings. The current device configurations are:
 
 - TMP007: Two samples per measurement, low power mode
 - OPT3001: Automatic full scale mode, 100 ms conversion time, continuous conversion mode
-- BME280: 1000 ms standby, IIR filter off, pressure sampling x1, temperature sampling x4, humidity sampling x1, forced mode
+- BME280: 1000 ms standby, IIR filter off, pressure sampling x1, temperature sampling x1, humidity sampling x1, normal mode
+
+For applications which require more frequent (i.e., on the order of once per second) or more accurate measurements, different configuration values may be needed and will require changes to the library. See the device datasheets for configuration options.
 
 External Libraries That Need To Be Installed
 --------------------------------------------
