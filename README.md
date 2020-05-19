@@ -54,7 +54,7 @@ myOPT3001.getLux();  // Returns unsigned long representing light intensity in lu
 myBME280.getTempC();  // Returns int representing temperature in units of 0.01 degrees Celsius
 myBME280.getTempF();  // Returns int representing temperature in units of 0.1 degrees Fahrenheit
 myBME280.getRH();  // Returns int representing relative humidity in units of 0.1 %RH
-myBME280.getPressurePa();  // Returns uint16_t representing barometric pressure in units of pascals (Pa)
+myBME280.getPressurePa();  // Returns uint32_t representing barometric pressure in units of pascals (Pa)
 myBME280.getPressureInHg();  // Returns uint16_t representing barometric pressure in units of 0.01 inches of mercury (inHg)
 ```
 
