@@ -195,7 +195,7 @@ void BME280_SWI2C::calibrate() {
   _BME280_device->read1bFromRegister(BME280_CALIBRATION_H5, &data8);
   dig_H4 = dig_H4 + (data8 & 0x0F);
   //    0xE5[7:4] / 0xE6 dig_H5 [3:0] / [11:4] signed short = int16_t
-  // dig_H5  = (_BME280_device->read1bFromRegister(BME280_SLAVE_ADDRESS, BME280_CALIBRATION_H5) >> 4) + (_BME280_device->read1bFromRegister(BME280_SLAVE_ADDRESS, BME280_CALIBRATION_H5B2) << 4);
+  // dig_H5  = (_BME280_device->read1bFromRegister(BME280_ADDRESS, BME280_CALIBRATION_H5) >> 4) + (_BME280_device->read1bFromRegister(BME280_ADDRESS, BME280_CALIBRATION_H5B2) << 4);
   _BME280_device->read1bFromRegister(BME280_CALIBRATION_H5, &data8);
   dig_H5 = (data8 >> 4) & 0x0F;
   _BME280_device->read1bFromRegister(BME280_CALIBRATION_H5B2, &data8);
@@ -232,7 +232,7 @@ void BME280_SWI2C::readSensor() {
       _BME280_device->writeAck();
     }
     else { // Last byte needs a NACK
-      _BME280_device->checkAckBit(); // Master needs to send NACK when done reading data
+      _BME280_device->checkAckBit(); // Controller needs to send NACK when done reading data
     }
   }
   _BME280_device->stopBit();
