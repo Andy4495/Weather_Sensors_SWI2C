@@ -97,6 +97,10 @@ References
 + [OPT3001][2]
 + [BME280][3]
 
+License
+-------
+The software and other files in this repository are released under what is commonly called the [MIT License][100]. See the file [`LICENSE.txt`][101] in this repository.
+
 [1]: https://cdn-shop.adafruit.com/datasheets/tmp007.pdf
 [2]: https://www.ti.com/lit/ds/symlink/opt3001.pdf
 [3]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf
@@ -104,3 +108,5 @@ References
 [5]: https://github.com/Andy4495/SWI2C
 [6]: https://github.com/BoschSensortec/BME280_driver
 [7]: https://github.com/rei-vilo/SensorsWeather_Library
+[100]: https://choosealicense.com/licenses/mit/
+[101]: ./LICENSE.txt
