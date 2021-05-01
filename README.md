@@ -72,7 +72,7 @@ myBME280.getPressureInHg();  // Returns uint16_t representing barometric pressur
 
 ## Implementation Details
 
-This library was inspired by Rei Vilo's [Weather Sensors Library][7]. My library is implemented using software I2c and uses integer-only math. In addition, my library configures the sensors somewhat differently.
+This library was inspired by Rei Vilo's [Weather Sensors Library][7]. My library is implemented using software I2C and uses integer-only math. In addition, my library configures the sensors somewhat differently.
 
 The BME280 object uses code based on portions of BoschSensortec's [BME280 driver code][6].
 
