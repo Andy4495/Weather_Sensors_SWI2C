@@ -214,28 +214,8 @@ void BME280_SWI2C::readSensor() {
   int32_t  v_x1_u32r;
   int32_t  t_fine;
 
-  // Write register BME280_DATA_F7_FE with no data, plus a stop
-  // 8 consecutive byte reads
-  _BME280_device->startBit();
-  _BME280_device->writeAddress(0); // 0 == Write bit
-  _BME280_device->checkAckBit();
-  _BME280_device->writeRegister(BME280_DATA_F7_FE);
-  _BME280_device->checkAckBit();
-  //  stopBit();
-  _BME280_device->startBit();
-  _BME280_device->writeAddress(1); // 1 == Read bit
-  _BME280_device->checkAckBit();
-  // Loop 8 bytes
-  for (int i = 0; i < 8; i++) {
-    BME280RawData[i] = _BME280_device->read1Byte();
-    if (i < 7) {
-      _BME280_device->writeAck();
-    }
-    else { // Last byte needs a NACK
-      _BME280_device->checkAckBit(); // Controller needs to send NACK when done reading data
-    }
-  }
-  _BME280_device->stopBit();
+  // Read 8 bytes from register BME280_DATA_F7_FE
+  _BME280_device->readBytesFromRegister(BME280_DATA_F7_FE, BME280RawData, 8);
 
   rawBME280P = ((uint32_t)BME280RawData[0] << 12) + ((uint32_t)BME280RawData[1] << 4) + ((uint32_t)BME280RawData[2] >> 4);
   rawBME280T = ((uint32_t)BME280RawData[3] << 12) + ((uint32_t)BME280RawData[4] << 4) + ((uint32_t)BME280RawData[5] >> 4);
