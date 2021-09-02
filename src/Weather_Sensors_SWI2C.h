@@ -88,6 +88,7 @@ public:
   int      getIntTempF();
   int      getExtTempC();
   int      getExtTempF();
+  SWI2C*   getSWI2CObject();
   uint16_t readDeviceID();
 
 private:
@@ -103,6 +104,7 @@ public:
   void             begin();
   void             readSensor();
   unsigned long    getLux();
+  SWI2C*           getSWI2CObject();
   uint16_t         readDeviceID();
 
 private:
@@ -121,6 +123,7 @@ public:
   int       getRH();
   uint32_t  getPressurePa();
   uint16_t  getPressureInHg();
+  SWI2C*    getSWI2CObject();
   uint8_t   readDeviceID();
 
 private:

@@ -37,17 +37,29 @@ void setup() {
   Serial.print("TMP007 DeviceID: 0x");
   Serial.println(myTMP007.readDeviceID(), HEX);
   Serial.println("TMP007 Device ID should be: 0x78");
+  Serial.println("Default clock stretch timout setting is 500 ms.");
+  Serial.print("Clock stretch timeout setting: ");
+  Serial.println(myTMP007.getSWI2CObject()->getStretchTimeout());
   Serial.println("");
 
   Serial.print("OPT3001 DeviceID: 0x");
   Serial.println(myOPT3001.readDeviceID(), HEX);
   Serial.println("OPT3001 Device ID should be: 0x3001");
+  Serial.println("Setting clock stretch timeout to 300 ms.");
+  myOPT3001.getSWI2CObject()->setStretchTimeout(300);
+  Serial.print("Clock stretch timeout setting: ");
+  Serial.println(myOPT3001.getSWI2CObject()->getStretchTimeout());
+  Serial.println("");
   Serial.println("");
 
   Serial.print("BME280 Device ID: 0x");
   Serial.println(myBME280.readDeviceID(), HEX);
   Serial.println("BME280 Device ID should be: 0x60");
-
+  Serial.println("Setting clock stretch timeout to 100 ms.");
+  myBME280.getSWI2CObject()->setStretchTimeout(100);  
+  Serial.print("Clock stretch timeout setting: ");
+  Serial.println(myBME280.getSWI2CObject()->getStretchTimeout());
+  Serial.println("");
   Serial.println("--");
 }
 

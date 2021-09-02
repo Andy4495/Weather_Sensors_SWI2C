@@ -67,6 +67,10 @@ int TMP007_SWI2C::getExtTempF() {
   return (_extTempC * 18 + 5) / 10 + 320;
 }
 
+SWI2C*   TMP007_SWI2C::getSWI2CObject() {
+  return _TMP007_device;
+}
+
 uint16_t TMP007_SWI2C::readDeviceID() {
   uint16_t data16;
   _TMP007_device->read2bFromRegisterMSBFirst(TMP007_DEVICE_ID, &data16);
@@ -100,6 +104,10 @@ void OPT3001_SWI2C::readSensor() {
 
 unsigned long OPT3001_SWI2C::getLux() {
   return _lux;
+}
+
+SWI2C*   OPT3001_SWI2C::getSWI2CObject() {
+  return _OPT3001_device;
 }
 
 uint16_t OPT3001_SWI2C::readDeviceID(){
@@ -148,6 +156,10 @@ uint16_t BME280_SWI2C::getPressureInHg() {
   // Scale up by 100 in order to do interger math
   // Since device is only accurate to +/- 1.5 hPa, and inHG conversion factor depends on temp, don't bother adding a rounding factor
   return (_pressurePa * 100) / 3386;
+}
+
+SWI2C*   BME280_SWI2C::getSWI2CObject() {
+  return _BME280_device;
 }
 
 uint8_t BME280_SWI2C::readDeviceID(){

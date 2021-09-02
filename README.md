@@ -84,6 +84,8 @@ myOPT3001.readDeviceID(); // Should return the 16-bit value 0x3001
 myBME280.readDeviceID();  // Should return the 8-bit value 0x60
 ```
 
+All sensors also support the `getSWI2CObject()` method. This returns a pointer to the underlying `SWI2C` object and its available [public methods][5]. This could be useful in certain debugging and other specialized situations.
+
 The constructors have default values for the I2C_Address. If your device is configured with its address select pins tied to ground, you can call the constructor without the I2C_Address and just include the sda_pin and scl_pin parameters. The default 7-bit I2C addresses are:
 
 - TMP007: `0x40`
