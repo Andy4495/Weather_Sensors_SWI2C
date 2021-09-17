@@ -5,6 +5,8 @@ Uses integer-only calculations and variables.
 
 Version History
    1.0.0    05/17/2020  A.T.   Original
+   1.0.1    09/17/2021  A.T.   Add examples for updated API access to 
+                               the SWI2C object. 
 */
 
 #include "Weather_Sensors_SWI2C.h"
@@ -64,6 +66,8 @@ void setup() {
 }
 
 void loop() {
+  uint16_t data16A, data16B, data16C;
+  uint8_t data8;
 
   myTMP007.readSensor();
 
@@ -96,6 +100,22 @@ void loop() {
   Serial.println(myBME280.getPressureInHg());
   Serial.print("  Relative Humidity (0.1%RH):   ");
   Serial.println(myBME280.getRH());
+  Serial.println("---");
+
+  
+  Serial.println("Test Repeated Start");
+  myTMP007.getSWI2CObject()->read2bFromRegisterMSBFirst(TMP007_INTERNAL_TEMPERATURE, &data16A, false);
+  myTMP007.getSWI2CObject()->read2bFromRegisterMSBFirst(TMP007_EXTERNAL_TEMPERATURE, &data16B, false);
+  myOPT3001.getSWI2CObject()->read2bFromRegisterMSBFirst(OPT3001_RESULT_REGISTER, &data16C, false);
+  myBME280.getSWI2CObject()->read1bFromRegister(BME280_ID, &data8);
+  Serial.print("TMP007 Internal C: ");
+  Serial.println(data16A);
+  Serial.print("TMP007 External C: "); 
+  Serial.println(data16B);
+  Serial.print("OPT3001 Lux: ");
+  Serial.println(data16C);
+  Serial.print("BME280 Device ID: 0x");
+  Serial.println(data8, HEX);
   Serial.println("---");
 
   delay(DELAY_TIME);
