@@ -233,7 +233,8 @@ void BME280_SWI2C::readSensor() {
   rawBME280T = ((uint32_t)BME280RawData[3] << 12) + ((uint32_t)BME280RawData[4] << 4) + ((uint32_t)BME280RawData[5] >> 4);
   rawBME280H = ((uint32_t)BME280RawData[6] <<  8) + (uint32_t)BME280RawData[7];
 
-  // The following T, H, and P compensation code is adapted from BoschSensortec's BME280 driver code on GitHub. (https://github.com/BoschSensortec/BME280_driver)
+  // The following T, H, and P compensation code is adapted from BoschSensortec's BME280 data sheet section 4.2.3 (https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf)
+  // Bosch Sensortec also has driver code which is similar available on GitHub: https://github.com/BoschSensortec/BME280_driver
 
   var1_32  = ((((rawBME280T >> 3) - ((int32_t)dig_T1 << 1))) * ((int32_t)dig_T2)) >> 11;
   var2_32  = (((((rawBME280T >> 4) - ((int32_t)dig_T1)) * ((rawBME280T >> 4) - ((int32_t)dig_T1))) >> 12) * ((int32_t)dig_T3)) >> 14;

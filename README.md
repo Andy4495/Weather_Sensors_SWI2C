@@ -77,7 +77,7 @@ myBME280.getPressureInHg();  // Returns uint16_t representing barometric pressur
 
 This library was inspired by Rei Vilo's [Weather Sensors Library][7]. My library is implemented using software I2C and uses integer-only math. In addition, my library configures the sensors somewhat differently.
 
-The BME280 object uses code based on portions of BoschSensortec's [BME280 driver code][6].
+The BME280 object uses code based on Section 4.2.3 *Compensation Forumulas* from the BME280 [datasheet][3].
 
 All sensors support the `readDeviceID()` method, which is a factory programmed value that can be used to confirm you are communicating with the correct device:
 
@@ -111,13 +111,17 @@ For applications which require more frequent (i.e., on the order of once per sec
 
 ## References
 
-- [TMP007][1]
-- [OPT3001][2]
-- [BME280][3]
+- TMP007 [datasheet][1]
+- OPT3001 [datasheet][2]
+- BME280 [datasheet][3]
+  - This library uses code adapted from the datasheet section 4.2.3 for the sensor compensation calculations.
+  - Bosch Sensortec also publishes driver code with similar calculations on [GitHub][6]
 
 ## License
 
-The software and other files in this repository are released under what is commonly called the [MIT License][100]. See the file [`LICENSE.txt`][101] in this repository.
+The software and other files in this repository (with the exception listed below) are released under what is commonly called the [MIT License][100]. See the file [`LICENSE.txt`][101] in this repository.
+
+The implementation of BME280_SWI2C::readSensor() in Weather_Sensors_SWI2C.cpp is adapted from sample code provided by Bosch Sensortec. The library specifically adapted code from the BME280 [datasheet][3] section 4.2.3, which does not list licensing information beyond saying "the code below can be applied at the user's risk." However, similar code is published by Bosch Sensortec on [GitHub][6] under the BSD-3-Clause license.
 
 [1]: https://cdn-shop.adafruit.com/datasheets/tmp007.pdf
 [2]: https://www.ti.com/lit/ds/symlink/opt3001.pdf
