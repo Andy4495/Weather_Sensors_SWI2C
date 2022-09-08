@@ -132,4 +132,4 @@ The implementation of BME280_SWI2C::readSensor() in Weather_Sensors_SWI2C.cpp is
 [7]: https://github.com/rei-vilo/SensorsWeather_Library
 [100]: https://choosealicense.com/licenses/mit/
 [101]: ./LICENSE.txt
-[200]: https://github.com/Andy4495/Weather_Sensors_SWI2C
+[//]: # ([200]: https://github.com/Andy4495/Weather_Sensors_SWI2C)
