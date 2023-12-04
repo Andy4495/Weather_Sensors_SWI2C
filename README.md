@@ -126,7 +126,7 @@ The implementation of BME280_SWI2C::readSensor() in Weather_Sensors_SWI2C.cpp is
 [1]: https://cdn-shop.adafruit.com/datasheets/tmp007.pdf
 [2]: https://www.ti.com/lit/ds/symlink/opt3001.pdf
 [3]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf
-[4]: https://www.ti.com/tool/BOOSTXL-SENSORS
+[4]: https://www.ti.com/lit/ug/slau666b/slau666b.pdf
 [5]: https://github.com/Andy4495/SWI2C
 [6]: https://github.com/BoschSensortec/BME280_driver
 [7]: https://github.com/rei-vilo/SensorsWeather_Library
