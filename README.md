@@ -121,7 +121,7 @@ For applications which require more frequent (i.e., on the order of once per sec
 
 The software and other files in this repository (with the exception listed below) are released under what is commonly called the [MIT License][100]. See the file [`LICENSE.txt`][101] in this repository.
 
-The implementation of BME280_SWI2C::readSensor() in Weather_Sensors_SWI2C.cpp is adapted from sample code provided by Bosch Sensortec. The library specifically adapted code from the BME280 [datasheet][3] section 4.2.3, which does not list licensing information beyond saying "the code below can be applied at the user's risk." However, similar code is published by Bosch Sensortec on [GitHub][6] under the BSD-3-Clause license.
+The implementation of `BME280_SWI2C::readSensor()` in `Weather_Sensors_SWI2C.cpp` is adapted from sample code provided by Bosch Sensortec. The library specifically adapted code from the BME280 [datasheet][3] section 4.2.3, which does not list licensing information beyond saying "the code below can be applied at the user's risk." However, similar code is published by Bosch Sensortec on [GitHub][6] under the BSD-3-Clause license.
 
 [1]: https://cdn-shop.adafruit.com/datasheets/tmp007.pdf
 [2]: https://www.ti.com/lit/ds/symlink/opt3001.pdf
