@@ -1,7 +1,7 @@
 # Weather Sensors SWI2C Library
 
 [![Arduino Compile Sketches](https://github.com/Andy4495/Weather_Sensors_SWI2C/actions/workflows/arduino-compile-sketches.yml/badge.svg)](https://github.com/Andy4495/Weather_Sensors_SWI2C/actions/workflows/arduino-compile-sketches.yml)
-[![Check Markdown Links](https://github.com/Andy4495/Weather_Sensors_SWI2C/actions/workflows/CheckMarkdownLinks.yml/badge.svg)](https://github.com/Andy4495/Weather_Sensors_SWI2C/actions/workflows/CheckMarkdownLinks.yml)
+[![Check Markdown Links](https://github.com/Andy4495/Weather_Sensors_SWI2C/actions/workflows/check-links.yml/badge.svg)](https://github.com/Andy4495/Weather_Sensors_SWI2C/actions/workflows/check-links.yml)
 
 This library is designed for [TMP007][1], [OPT3001][2], and [BME280][3] sensors using software I2C and integer-only calculations. The library only supports polling mode (interrupts are not supported).
 
