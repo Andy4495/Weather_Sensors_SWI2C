@@ -9,7 +9,7 @@ It was specifically designed for the [SENSORS BoosterPack][4], but it can be use
 
 ## Usage
 
-*See the exmple sketch included with the library.*
+*See the example sketch included with the library.*
 
 1. Install the [SWI2C][5] library in addition to this library.
 
