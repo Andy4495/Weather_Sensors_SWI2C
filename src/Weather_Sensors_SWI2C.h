@@ -9,7 +9,7 @@ Version History
 #ifndef WEATHER_SENSORS_SWI2C
 #define WEATHER_SENSORS_SWI2C
 
-#include "SWI2C.h"
+#include "SWI2C.h"      // https://github.com/Andy4495/SWI2C
 
 #define TMP007_DEFAULT_ADDRESS               0x40     // 0x40 when ADDR0 and ADDR0 pulled to GND
 #define OPT3001_DEFAULT_ADDRESS              0x44     // 0x44 when ADDR pulled to GND
